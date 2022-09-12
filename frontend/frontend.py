@@ -25,9 +25,9 @@ def draw_gradio_ui(opt, img2img=lambda x: x, txt2img=lambda x: x,imgproc=lambda 
 
                 with gr.Row(elem_id='body').style(equal_height=False):
                     with gr.Column():
-                        txt2img_width = gr.Slider(minimum=64, maximum=1024, step=64, label="Width",
+                        txt2img_width = gr.Slider(minimum=64, maximum=2048, step=64, label="Width",
                                                   value=txt2img_defaults["width"])
-                        txt2img_height = gr.Slider(minimum=64, maximum=1024, step=64, label="Height",
+                        txt2img_height = gr.Slider(minimum=64, maximum=2048, step=64, label="Height",
                                                    value=txt2img_defaults["height"])
                         txt2img_cfg = gr.Slider(minimum=-40.0, maximum=30.0, step=0.5,
                                                 label='Classifier Free Guidance Scale (how strongly the image should follow the prompt)',
@@ -339,7 +339,7 @@ def draw_gradio_ui(opt, img2img=lambda x: x, txt2img=lambda x: x,imgproc=lambda 
 
                 img2img_width.change(fn=uifn.update_dimensions_info, inputs=[img2img_width, img2img_height], outputs=img2img_dimensions_info_text_box)
                 img2img_height.change(fn=uifn.update_dimensions_info, inputs=[img2img_width, img2img_height], outputs=img2img_dimensions_info_text_box)
-            
+
             with gr.TabItem("Image Lab", id='imgproc_tab'):
                     gr.Markdown("Post-process results")
                     with gr.Row():
@@ -436,7 +436,7 @@ def draw_gradio_ui(opt, img2img=lambda x: x, txt2img=lambda x: x,imgproc=lambda 
                                                         choices=["None", '1/2', '1/4'],value="None",visible=LDSR is not None)
                                             imgproc_ldsr_post_downSample = gr.Dropdown(label='LDSR Post Downsample mode (aka SuperSampling)',
                                                         choices=["None", "Original Size", '1/2', '1/4'],value="None",visible=LDSR is not None)
-                                with gr.Box(visible=False) as gobig_group:   
+                                with gr.Box(visible=False) as gobig_group:
                                     with gr.Row(elem_id="proc_prompt_row"):
                                         with gr.Column():
                                             gr.Markdown("<b>GoBig Settings</b>")
@@ -482,7 +482,7 @@ def draw_gradio_ui(opt, img2img=lambda x: x, txt2img=lambda x: x,imgproc=lambda 
                                         inputs = [output_txt2img_params],
                                         outputs = [imgproc_prompt,imgproc_seed,imgproc_steps,imgproc_cfg,imgproc_sampling],
                                         )
-                                    
+
                                     output_txt2img_to_imglab.click(
                                         fn=uifn.copy_img_to_lab,
                                         inputs = [output_txt2img_gallery],
@@ -505,7 +505,7 @@ def draw_gradio_ui(opt, img2img=lambda x: x, txt2img=lambda x: x,imgproc=lambda 
             imgproc_toggles.change(fn=uifn.toggle_options_upscalers, inputs=[imgproc_toggles], outputs=[upscalerSettings_group])
             imgproc_upscale_toggles.change(fn=uifn.toggle_options_realesrgan, inputs=[imgproc_upscale_toggles], outputs=[realesrgan_group])
             imgproc_upscale_toggles.change(fn=uifn.toggle_options_ldsr, inputs=[imgproc_upscale_toggles], outputs=[ldsr_group])
-            imgproc_upscale_toggles.change(fn=uifn.toggle_options_gobig, inputs=[imgproc_upscale_toggles], outputs=[gobig_group])                 
+            imgproc_upscale_toggles.change(fn=uifn.toggle_options_gobig, inputs=[imgproc_upscale_toggles], outputs=[gobig_group])
 
             """
             if GFPGAN is not None:
